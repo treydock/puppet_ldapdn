@@ -159,6 +159,12 @@ Puppet::Type.type(:ldapdn).provide :ldapdn do
       line.gsub!(/[\r\n] /, '')
       line.gsub!(/\r?\n?$/, '')
       current_key,current_value = line.split(/:+ /, 2)
+      if resource[:decode_attributes].include?(current_key)
+        require 'base64'
+        decoded_value = Base64.decode64(current_value)
+        Puppet.debug("decode() #{current_value} => #{decoded_value}")
+        current_value = decoded_value
+      end
       found_keys << current_key
       if asserted_attributes.key?(current_key)
         Puppet.debug("search() #{current_key}: #{current_value}")

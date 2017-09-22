@@ -43,6 +43,11 @@ Puppet::Type.newtype(:ldapdn) do
     desc "Specify the attributes you dont care about their subsequent values (e.g. passwords)"
   end
 
+  newparam(:decode_attributes, :array_matching => :all) do
+    desc "Specify the attributes that must be Base64 decoded (e.g. passwords)"
+    defaultto { [] }
+  end
+
   newparam(:dn) do
     desc "Specify the value of the attribute you want to ldapmodify"
     defaultto { @resource[:name] }
