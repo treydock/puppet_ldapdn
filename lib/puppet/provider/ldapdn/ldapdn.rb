@@ -172,7 +172,7 @@ Puppet::Type.type(:ldapdn).provide :ldapdn do
         asserted_attributes[current_key].each do |asserted_value|
           Puppet.debug("check() #{current_key}: #{current_value}  <===>  #{current_key}: #{asserted_value}")
           same_as_an_asserted_value = true if asserted_value == current_value
-          same_as_an_asserted_value = true if asserted_value.clone.gsub(/^\{.*?\}/, "") == current_value.clone.gsub(/^\{.*?\}/, "")
+          same_as_an_asserted_value = true if asserted_value.to_s.clone.gsub(/^\{.*?\}/, "") == current_value.clone.gsub(/^\{.*?\}/, "")
         end
         if same_as_an_asserted_value
           Puppet.debug("asserted and found: #{current_key}: #{current_value}")
@@ -193,7 +193,7 @@ Puppet::Type.type(:ldapdn).provide :ldapdn do
         Puppet.debug("assert() #{asserted_key}: #{asserted_value}")
 
         if resource[:ensure] == :present
-          work_to_do[asserted_key] << [ :add, asserted_value ] unless found_attributes[ asserted_key ].include?(asserted_value.clone.gsub(/^\{.*?\}/, "")) \
+          work_to_do[asserted_key] << [ :add, asserted_value ] unless found_attributes[ asserted_key ].include?(asserted_value.to_s.clone.gsub(/^\{.*?\}/, "")) \
                                                                    or (found_keys.include?(asserted_key) and indifferent_attributes.include?(asserted_key))
         end
 
